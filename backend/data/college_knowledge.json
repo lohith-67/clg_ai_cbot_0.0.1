@@ -1,0 +1,234 @@
+{
+  "college": {
+    "name": "Sapthagiri NPS University",
+    "short_name": "SNPSU",
+    "location": "Bangalore, Karnataka, India",
+    "website": "https://snpsu.edu.in",
+    "phone": "+91-XXXX-XXXXXX",
+    "email": "info@snpsu.edu.in",
+    "established": "XXXX"
+  },
+
+  "departments": [
+    { "name": "Computer Science & Engineering", "hod": "Prof. XXXX", "email": "cse@snpsu.edu.in" },
+    { "name": "Electronics & Communication Engineering", "hod": "Prof. XXXX", "email": "ece@snpsu.edu.in" },
+    { "name": "Mechanical Engineering", "hod": "Prof. XXXX", "email": "mech@snpsu.edu.in" },
+    { "name": "Civil Engineering", "hod": "Prof. XXXX", "email": "civil@snpsu.edu.in" },
+    { "name": "Business Administration (MBA)", "hod": "Prof. XXXX", "email": "mba@snpsu.edu.in" }
+  ],
+
+  "events": [
+    {
+      "name": "IMPACTUS",
+      "type": "Hackathon",
+      "date": "29 April 2026",
+      "time": "9:00 AM – 6:00 PM",
+      "venue": "B Block, 5th Floor",
+      "description": "7-hour offline hackathon for 1st & 2nd year students",
+      "domains": [
+        "Web & Campus Life",
+        "Social Impact & FinTech",
+        "AI & EdTech"
+      ],
+      "rewards": "Electronic gadgets for top 3 teams",
+      "contacts": [
+        { "name": "Varsha V", "phone": "9380943625" },
+        { "name": "Srishti Singh", "phone": "7619587531" }
+      ]
+    },
+    {
+      "name": "CODEMAZE 2026",
+      "type": "Technical Event",
+      "date": "27 April 2026",
+      "time": "9:00 AM onwards",
+      "venue": "B Block, 6th Floor",
+      "highlights": [
+        "Junk to Genius",
+        "Escape Room",
+        "Team Challenges"
+      ],
+      "contact": {
+        "name": "Lohith",
+        "phone": "7676273150"
+      }
+    },
+    {
+      "name": "AURAFESTA",
+      "type": "Cultural Fest",
+      "date": "8–9 May 2026",
+      "description": "Biggest intra college fest",
+      "events_list": {
+        "dance": [
+          "Western Solo",
+          "Eastern Solo",
+          "Battle Dance",
+          "Group Dance"
+        ],
+        "music": [
+          "Solo Singing",
+          "Group Singing"
+        ],
+        "theatre": [
+          "Mono Act",
+          "Skit"
+        ],
+        "arts": [
+          "Rangoli",
+          "Mehendi",
+          "Face Painting"
+        ],
+        "gaming": [
+          "BGMI",
+          "Free Fire"
+        ],
+        "literary": [
+          "Quiz",
+          "Debate",
+          "Poetry"
+        ]
+      }
+    },
+    {
+      "name": "SNPSU Tech Fest 2025",
+      "date": "October 15-17, 2025",
+      "description": "Annual technical festival with coding competitions, robotics, paper presentations",
+      "venue": "Main Auditorium & Sports Ground",
+      "registration": "Open to all students. Register at college portal"
+    },
+    {
+      "name": "Cultural Fest – Utsav",
+      "date": "February 10-12, 2026",
+      "description": "Annual cultural extravaganza with dance, music, drama and art",
+      "venue": "College Amphitheatre"
+    }
+  ],
+
+  "timetable": {
+    "semester": "2nd Sem",
+    "section": "2DAS01",
+    "timings": "8:30 AM – 4:30 PM",
+    "subjects": [
+      "Mathematics",
+      "Engineering Physics",
+      "Civil Engineering",
+      "Programming in Python",
+      "Electrical Engineering",
+      "CAEG",
+      "IPR"
+    ]
+  },
+
+  "syllabus": {
+    "semester": 3,
+    "subjects": [
+      {
+        "name": "Probability and Statistics",
+        "code": "24BEDAS301",
+        "credits": 3
+      },
+      {
+        "name": "Object Oriented Programming",
+        "code": "24BEDAS302",
+        "credits": 3
+      },
+      {
+        "name": "Design and Analysis of Algorithms",
+        "code": "24BEDAS303",
+        "credits": 3
+      },
+      {
+        "name": "Operating Systems",
+        "code": "24BEDAS304",
+        "credits": 3
+      },
+      {
+        "name": "DBMS",
+        "code": "24BEDAS306",
+        "credits": 4
+      },
+      {
+        "name": "Computer Networks",
+        "code": "24BEDAS307",
+        "credits": 3
+      }
+    ]
+  },
+
+  "rules": {
+    "fest": [
+      "No vulgar content",
+      "No fire, smoke, or dangerous items",
+      "No outside food",
+      "Must report before event time",
+      "Judges decision is final"
+    ],
+    "exams": [
+      "75% attendance required",
+      "40% minimum to pass"
+    ]
+  },
+
+  "academic_calendar": {
+    "odd_semester": { "start": "August 1", "end": "December 15" },
+    "even_semester": { "start": "January 2", "end": "May 30" },
+    "exam_schedule": "Internal exams: 8th week and 14th week of each semester",
+    "result_date": "Usually 30 days after semester end exams"
+  },
+
+  "facilities": {
+    "library": "Open Mon–Sat 8am–8pm. 50,000+ books, digital access via INFLIBNET",
+    "hostel": "Separate boys and girls hostels available on campus",
+    "canteen": "Open 7:30am–8pm. Veg and non-veg options",
+    "sports": "Cricket ground, basketball court, gym, indoor games",
+    "labs": "40+ well-equipped labs across all departments",
+    "wifi": "24x7 high-speed Wi-Fi across campus"
+  },
+
+  "fee_structure": {
+    "note": "Contact admissions for exact fee. Below is approximate",
+    "BTech_per_year": "₹80,000 – ₹1,20,000 depending on branch",
+    "MBA_per_year": "₹1,00,000 – ₹1,50,000",
+    "scholarships": "SC/ST, OBC, merit-based, and sports scholarships available"
+  },
+
+  "admissions": {
+    "process": "Through KCET / COMEDK / Management quota",
+    "documents": ["10th Marksheet", "12th Marksheet", "Transfer Certificate", "Caste Certificate (if applicable)", "Passport Photos", "Aadhar Card"],
+    "contact": "admissions@snpsu.edu.in | +91-XXXX-XXXXXX"
+  },
+
+  "exam_rules": {
+    "attendance": "Minimum 75% attendance required to appear in semester exams",
+    "internal_marks": "40 marks internal + 60 marks external = 100 total",
+    "pass_criteria": "Minimum 40% in external exam and 40% aggregate to pass each subject"
+  },
+
+  "placement": {
+    "cell": "Training & Placement Cell",
+    "contact": "placements@snpsu.edu.in",
+    "top_recruiters": ["Infosys", "TCS", "Wipro", "Accenture", "Cognizant", "L&T"],
+    "avg_package": "₹4.5 LPA (approximate)",
+    "highest_package": "₹18 LPA (approximate)"
+  },
+
+  "clubs": [
+    { "name": "Coding Club", "meets": "Every Saturday 3pm", "contact": "coding@snpsu.edu.in" },
+    { "name": "IEEE Student Chapter", "meets": "Bi-weekly Fridays", "contact": "ieee@snpsu.edu.in" },
+    { "name": "NSS Chapter", "meets": "Every Sunday 8am", "contact": "nss@snpsu.edu.in" },
+    { "name": "Cultural Committee", "contact": "cultural@snpsu.edu.in" }
+  ],
+
+  "important_links": {
+    "student_portal": "https://portal.snpsu.edu.in",
+    "exam_results": "https://results.snpsu.edu.in",
+    "fee_payment": "https://fees.snpsu.edu.in",
+    "library_portal": "https://library.snpsu.edu.in"
+  },
+
+  "faq": [
+    { "q": "How do I apply for a bonafide certificate?", "a": "Visit the administrative office or apply through the student portal. Takes 2-3 working days." },
+    { "q": "What is the re-exam process?", "a": "Apply through student portal within 10 days of result declaration. Fee: ₹500 per subject." },
+    { "q": "How to get transcripts?", "a": "Apply at the exam section with a request letter and fee of ₹200. Takes 5-7 working days." },
+    { "q": "Is there a bus facility?", "a": "Yes, buses ply from major points in Bangalore. Contact transport office for routes and fees." }
+  ]
+}

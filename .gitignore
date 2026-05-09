@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains API keys!)
+.env
+
+# Uploaded & processed PDFs
+uploads/
+processed/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

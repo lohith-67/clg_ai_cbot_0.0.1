@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SNPSU Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & Root ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #1e1e1e;
+  --primary-light: #444444;
+  --accent: #3b82f6;
+  --accent-glow: rgba(59,130,246,0.2);
+  --bg: #ffffff;
+  --bg2: #f9f9f9;
+  --bg3: #f0f0f0;
+  --text: #1a1a1a;
+  --text2: #555555;
+  --text3: #aaaaaa;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --radius: 18px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: transparent;
+}
+
+/* ── Floating Trigger Button ───────────────────────────────── */
+#snpsu-trigger {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 0 0 var(--accent-glow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulse-ring 3s ease infinite;
+}
+#snpsu-trigger:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.15), 0 0 0 8px var(--accent-glow);
+}
+#snpsu-trigger svg { width: 28px; height: 28px; color: var(--accent); }
+
+@keyframes pulse-ring {
+  0%, 70%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 0 0 var(--accent-glow); }
+  35% { box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 0 10px rgba(59,130,246,0); }
+}
+
+/* Badge on trigger */
+#snpsu-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: var(--font-head);
+}
+
+/* ── Chat Window ───────────────────────────────────────────── */
+#snpsu-window {
+  position: fixed;
+  bottom: 104px;
+  right: 28px;
+  width: 390px;
+  height: 580px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.85) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), opacity 0.22s ease;
+}
+#snpsu-window.open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+#snpsu-header {
+  background: #ffffff;
+  padding: 14px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+.header-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+}
+.header-info { flex: 1; }
+.header-info h2 {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+.header-info p {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text2);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
+  animation: blink 2.5s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.header-actions { display: flex; gap: 8px; }
+.header-btn {
+  background: var(--bg2);
+  border: none;
+  border-radius: 8px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text2);
+  transition: background 0.15s;
+}
+.header-btn:hover { background: var(--bg3); }
+.header-btn svg { width: 15px; height: 15px; }
+
+/* ── Registration Screen ────────────────────────────────────── */
+#snpsu-register {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 28px 24px;
+  gap: 0;
+}
+.reg-logo {
+  width: 68px;
+  height: 68px;
+  background: var(--primary);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(26,58,92,0.2);
+}
+.reg-logo svg { width: 36px; height: 36px; }
+.reg-title {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 4px;
+}
+.reg-sub {
+  font-size: 13px;
+  color: var(--text2);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.reg-form { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+.reg-field label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  display: block;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.reg-field input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.18s;
+}
+.reg-field input:focus { border-color: var(--primary-light); }
+.reg-field input::placeholder { color: var(--text3); }
+
+.reg-btn {
+  margin-top: 6px;
+  padding: 13px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.reg-btn:hover { background: var(--primary-light); }
+.reg-btn:active { transform: scale(0.98); }
+.reg-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Messages Area ──────────────────────────────────────────── */
+#snpsu-chat {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;      /* Critical: allows flex child to shrink below content size */
+  overflow: hidden;    /* Prevent the chat container itself from overflowing */
+}
+#snpsu-chat.active { display: flex; }
+
+#snpsu-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+#snpsu-messages::-webkit-scrollbar { width: 4px; }
+#snpsu-messages::-webkit-scrollbar-track { background: transparent; }
+#snpsu-messages::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 4px; }
+
+/* Date label */
+.date-label {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text3);
+  padding: 4px 10px;
+  background: var(--bg2);
+  border-radius: 20px;
+  align-self: center;
+}
+
+/* Messages */
+.msg {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  animation: msgIn 0.22s ease;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.msg.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--bg3);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  font-family: var(--font-head);
+}
+.msg.user .msg-avatar { background: var(--accent); color: #fff; }
+.bubble {
+  max-width: 78%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  word-break: break-word;
+}
+.msg.user .bubble {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+  border-radius: 14px 14px 4px 14px;
+}
+.msg.bot .bubble { border-radius: 14px 14px 14px 4px; }
+.bubble ul { padding-left: 16px; margin-top: 4px; }
+.bubble li { margin-bottom: 3px; }
+
+/* Typing indicator */
+.typing-indicator .bubble {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 13px 16px;
+}
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text3);
+  animation: bounce 1.2s infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.18s; }
+.dot:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bounce {
+  0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)}
+}
+
+/* ── Quick Suggestions ──────────────────────────────────────── */
+#snpsu-suggestions {
+  padding: 6px 14px 10px;
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+#snpsu-suggestions::-webkit-scrollbar { display: none; }
+.suggest-chip {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--primary);
+  cursor: pointer;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.suggest-chip:hover { background: var(--bg3); border-color: var(--primary-light); }
+
+/* ── Input Area ─────────────────────────────────────────────── */
+#snpsu-input-area {
+  padding: 10px 12px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 8px 8px 14px;
+  transition: border-color 0.18s;
+}
+.input-row:focus-within { border-color: var(--primary-light); }
+
+#snpsu-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--text);
+  outline: none;
+  resize: none;
+  max-height: 80px;
+  min-height: 22px;
+  line-height: 1.5;
+}
+#snpsu-input::placeholder { color: var(--text3); }
+
+.input-btn {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.12s;
+}
+.input-btn svg { width: 16px; height: 16px; }
+
+#voice-btn {
+  background: var(--bg3);
+  color: var(--text2);
+}
+#voice-btn:hover { background: var(--primary); color: #fff; }
+#voice-btn.listening {
+  background: #ef4444;
+  color: #fff;
+  animation: voice-pulse 1s ease infinite;
+}
+@keyframes voice-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
+
+#send-btn {
+  background: var(--primary);
+  color: #fff;
+}
+#send-btn:hover { background: var(--primary-light); }
+#send-btn:active { transform: scale(0.93); }
+#send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Voice status bar */
+#voice-status {
+  font-size: 11.5px;
+  color: var(--primary-light);
+  text-align: center;
+  height: 16px;
+  margin-top: 5px;
+  display: none;
+}
+#voice-status.visible { display: block; }
+
+/* ── Wake Word Indicator ────────────────────────────────────── */
+#wake-word-toast {
+  position: fixed;
+  bottom: 200px;
+  right: 28px;
+  background: var(--primary);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-head);
+  font-size: 13px;
+  z-index: 99999;
+  display: none;
+  animation: fadeUp 0.3s ease;
+  box-shadow: 0 4px 16px rgba(26,58,92,0.3);
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+/* ── Registration button spinner ───────────────────────────────── */
+.reg-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 480px) {
+  #snpsu-window { width: calc(100vw - 24px); right: 12px; bottom: 96px; height: 72vh; }
+  #snpsu-trigger { bottom: 20px; right: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Wake Word Toast ──────────────────────────────────────── -->
+<div id="wake-word-toast">🎙️ Hey Assistant — listening!</div>
+
+<!-- ── Floating Trigger ─────────────────────────────────────── -->
+<button id="snpsu-trigger" title="Chat with SNPSU Assistant">
+  <div id="snpsu-badge">AI</div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    <circle cx="9" cy="10" r="1" fill="white" stroke="none"/>
+    <circle cx="12" cy="10" r="1" fill="white" stroke="none"/>
+    <circle cx="15" cy="10" r="1" fill="white" stroke="none"/>
+  </svg>
+</button>
+
+<!-- ── Chat Window ───────────────────────────────────────────── -->
+<div id="snpsu-window">
+
+  <!-- Header -->
+  <div id="snpsu-header">
+    <div class="header-avatar">S</div>
+    <div class="header-info">
+      <h2>SNPSU Assistant</h2>
+      <p>Sapthagiri NPS University</p>
+    </div>
+    <div class="header-status">
+      <div class="status-dot"></div>
+      <span id="status-text">Online</span>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn" id="voice-toggle-btn" title="Voice Mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </button>
+      <button class="header-btn" id="close-btn" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Registration Screen -->
+  <div id="snpsu-register">
+    <div class="reg-logo">
+      <svg viewBox="0 0 40 40" fill="none">
+        <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" stroke="#E8A020" stroke-width="2" fill="none"/>
+        <path d="M20 10L30 15V25L20 30L10 25V15L20 10Z" fill="rgba(232,160,32,0.2)" stroke="#E8A020" stroke-width="1.5"/>
+        <circle cx="20" cy="20" r="4" fill="#E8A020"/>
+      </svg>
+    </div>
+    <div class="reg-title">Welcome to SNPSU</div>
+    <div class="reg-sub">Your AI campus assistant.<br>Let me know who I'm helping today.</div>
+    <div class="reg-form">
+      <div class="reg-field">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="e.g. Priya Sharma" autocomplete="name"/>
+      </div>
+      <div class="reg-field">
+        <label>SRN (Student Registration No.)</label>
+        <input type="text" id="reg-srn" placeholder="e.g. SNPSU2024CS001" autocomplete="off"/>
+      </div>
+      <button class="reg-btn" id="reg-submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Start Chatting
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat UI (shown after registration) -->
+  <div id="snpsu-chat">
+    <div id="snpsu-messages">
+      <div class="date-label" id="chat-date"></div>
+    </div>
+
+    <div id="snpsu-suggestions">
+      <button class="suggest-chip" onclick="sendSuggestion('📅 Today\'s timetable')">📅 Timetable</button>
+      <button class="suggest-chip" onclick="sendSuggestion('📢 Upcoming events')">📢 Events</button>
+      <button class="suggest-chip" onclick="sendSuggestion('🎓 Placement info')">🎓 Placements</button>
+      <button class="suggest-chip" onclick="sendSuggestion('📋 Exam schedule')">📋 Exams</button>
+      <button class="suggest-chip" onclick="sendSuggestion('🏛️ College facilities')">🏛️ Facilities</button>
+      <button class="suggest-chip" onclick="sendSuggestion('💰 Fee structure')">💰 Fees</button>
+    </div>
+
+    <div id="snpsu-input-area">
+      <div class="input-row">
+        <textarea id="snpsu-input" rows="1" placeholder="Ask anything about SNPSU..."></textarea>
+        <button class="input-btn" id="voice-btn" title="Voice input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+        <button class="input-btn" id="send-btn" disabled>
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+          </svg>
+        </button>
+      </div>
+      <div id="voice-status"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG — Change these to match your backend ─────────────────
+const API_BASE = 'http://localhost:3001/api';  // ← your backend URL
+const TTS_ENABLED = true;                       // ← text-to-speech on/off
+const WAKE_WORD = 'hey assistant';              // ← wake word phrase
+
+// ── State ─────────────────────────────────────────────────────
+let sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+let studentName = '';
+let studentSRN = '';
+let isOpen = false;
+let isListening = false;
+let wakeWordRecognition = null;
+let chatRecognition = null;
+let voiceMode = false;
+let isSpeaking = false;
+let _serverHealthy = null; // null = unknown, true = ok, false = down
+
+// ── Advanced Fetch Wrapper with timeout, retry, and error classification ──
+async function apiFetch(endpoint, options = {}, { retries = 2, timeoutMs = 15000 } = {}) {
+  const url = `${API_BASE}${endpoint}`;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timer);
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const err = new Error(body.error || `Server error (${res.status})`);
+        err.status = res.status;
+        err.serverError = true;
+        err.body = body;
+        throw err;
+      }
+      _serverHealthy = true;
+      return body;
+    } catch (err) {
+      clearTimeout(timer);
+      // Classify the error
+      if (err.serverError) throw err; // Don't retry server-side errors (4xx/5xx)
+      if (err.name === 'AbortError') {
+        err.message = 'Request timed out. The server is taking too long to respond.';
+        err.isTimeout = true;
+      }
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 500 * (attempt + 1))); // backoff
+        continue;
+      }
+      // Final failure — classify as network error
+      const netErr = new Error(
+        navigator.onLine === false
+          ? 'You appear to be offline. Please check your internet connection.'
+          : err.isTimeout
+            ? err.message
+            : 'Could not connect to server. Make sure the backend is running on port 3001.'
+      );
+      netErr.isNetwork = true;
+      _serverHealthy = false;
+      throw netErr;
+    }
+  }
+}
+
+// ── Health check — runs once on open and periodically ────────────
+async function checkServerHealth() {
+  try {
+    const res = await fetch(`${API_BASE.replace('/api', '')}/health`, { signal: AbortSignal.timeout(5000) });
+    _serverHealthy = res.ok;
+  } catch { _serverHealthy = false; }
+  return _serverHealthy;
+}
+
+// ── DOM refs ───────────────────────────────────────────────────
+const trigger    = document.getElementById('snpsu-trigger');
+const win        = document.getElementById('snpsu-window');
+const closeBtn   = document.getElementById('close-btn');
+const regScreen  = document.getElementById('snpsu-register');
+const chatScreen = document.getElementById('snpsu-chat');
+const messages   = document.getElementById('snpsu-messages');
+const input      = document.getElementById('snpsu-input');
+const sendBtn    = document.getElementById('send-btn');
+const voiceBtn   = document.getElementById('voice-btn');
+const voiceToggle= document.getElementById('voice-toggle-btn');
+const voiceStatus= document.getElementById('voice-status');
+const dateLabel  = document.getElementById('chat-date');
+const wakeToast  = document.getElementById('wake-word-toast');
+const regName    = document.getElementById('reg-name');
+const regSRN     = document.getElementById('reg-srn');
+const regSubmit  = document.getElementById('reg-submit');
+const statusText = document.getElementById('status-text');
+
+// ── Helpers ────────────────────────────────────────────────────
+function toggleOpen() {
+  isOpen = !isOpen;
+  win.classList.toggle('open', isOpen);
+}
+
+function showDate() {
+  const d = new Date();
+  dateLabel.textContent = d.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.appendChild(document.createTextNode(str));
+  return d.innerHTML;
+}
+
+function addMessage(role, text) {
+  const isUser = role === 'user';
+  const rawInitials = isUser ? (studentName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || 'ME') : 'SN';
+  const initials = escapeHtml(rawInitials);
+  const div = document.createElement('div');
+  div.className = `msg ${isUser ? 'user' : 'bot'}`;
+
+  // Escape HTML first to prevent XSS, then apply safe formatting
+  const safe = escapeHtml(text);
+  const formatted = safe
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n• /g, '\n<li>')
+    .replace(/\n- /g, '\n<li>');
+
+  div.innerHTML = `
+    <div class="msg-avatar">${initials}</div>
+    <div class="bubble">${formatted.replace(/\n/g, '<br/>')}</div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
+}
+
+function addTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg bot typing-indicator';
+  div.id = 'typing';
+  div.innerHTML = `<div class="msg-avatar">SN</div><div class="bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function speak(text) {
+  if (!TTS_ENABLED || !voiceMode) return;
+  window.speechSynthesis.cancel();
+  const clean = text.replace(/<[^>]+>/g, '').replace(/[*_`]/g, '');
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.rate = 1.0; utt.pitch = 1.05; utt.volume = 1;
+  const voices = speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en'));
+  if (preferred) utt.voice = preferred;
+  isSpeaking = true;
+  utt.onend = () => { isSpeaking = false; };
+  speechSynthesis.speak(utt);
+}
+
+// ── Registration ───────────────────────────────────────────────
+regSubmit.addEventListener('click', async () => {
+  const name = regName.value.trim();
+  const srn  = regSRN.value.trim();
+  if (!name || !srn) {
+    regName.style.borderColor = !name ? '#ef4444' : '';
+    regSRN.style.borderColor = !srn ? '#ef4444' : '';
+    return;
+  }
+
+  // Clear previous errors
+  const prevErr = document.getElementById('reg-error');
+  if (prevErr) prevErr.remove();
+
+  regSubmit.disabled = true;
+  regSubmit.innerHTML = '<span class="reg-spinner"></span> Connecting...';
+
+  // Pre-flight health check — fast-fail if backend is down
+  const healthy = await checkServerHealth();
+  if (!healthy) {
+    showRegError('🔌 Backend server is not reachable at localhost:3001.\nMake sure you ran: npm start (in the backend folder)');
+    regSubmit.disabled = false;
+    regSubmit.textContent = 'Start Chatting';
+    return;
+  }
+
+  regSubmit.innerHTML = '<span class="reg-spinner"></span> Setting up...';
+
+  try {
+    const data = await apiFetch('/chat/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, srn, sessionId })
+    }, { retries: 1, timeoutMs: 20000 });
+
+    studentName = name;
+    studentSRN = srn;
+
+    regScreen.style.display = 'none';
+    chatScreen.classList.add('active');
+    showDate();
+    addMessage('bot', data.welcomeMessage);
+    speak(data.welcomeMessage);
+    startWakeWordListener();
+  } catch (err) {
+    regSubmit.disabled = false;
+    regSubmit.textContent = 'Start Chatting';
+
+    // Smart error messages based on error type
+    let msg;
+    if (err.isNetwork) {
+      msg = `🔌 ${err.message}`;
+    } else if (err.status === 500) {
+      msg = `⚙️ Server error: ${err.message}\nCheck the backend terminal for details.`;
+    } else if (err.status === 400) {
+      msg = `📝 ${err.message}`;
+    } else if (err.status === 429) {
+      msg = '⏳ Too many requests. Please wait a moment and try again.';
+    } else {
+      msg = `❌ ${err.message || 'Something went wrong. Please try again.'}`;
+    }
+    showRegError(msg);
+  }
+});
+
+function showRegError(msg) {
+  let errEl = document.getElementById('reg-error');
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.id = 'reg-error';
+    errEl.style.cssText = 'color:#ef4444;font-size:12px;text-align:center;margin-top:8px;padding:10px 14px;background:rgba(239,68,68,0.08);border-radius:8px;line-height:1.5;white-space:pre-line;';
+    regSubmit.parentNode.appendChild(errEl);
+  }
+  errEl.textContent = msg;
+  // Auto-dismiss after 10 seconds
+  setTimeout(() => { if (errEl.parentNode) errEl.remove(); }, 10000);
+}
+
+regName.addEventListener('keydown', e => { if(e.key==='Enter') regSRN.focus(); });
+regSRN.addEventListener('keydown', e => { if(e.key==='Enter') regSubmit.click(); });
+// Clear red validation border when user starts typing
+regName.addEventListener('input', () => { regName.style.borderColor = ''; });
+regSRN.addEventListener('input', () => { regSRN.style.borderColor = ''; });
+
+// ── Send Message ───────────────────────────────────────────────
+async function sendMessage(text) {
+  if (!text || !text.trim()) return;
+  const msg = text.trim();
+  input.value = '';
+  input.style.height = 'auto';
+  sendBtn.disabled = true;
+
+  addMessage('user', msg);
+  addTyping();
+  statusText.textContent = 'Typing...';
+
+  try {
+    const data = await apiFetch('/chat/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, sessionId, srn: studentSRN, studentName })
+    }, { retries: 1, timeoutMs: 30000 });
+
+    removeTyping();
+    statusText.textContent = 'Online';
+    addMessage('bot', data.reply);
+    speak(data.reply);
+  } catch (err) {
+    removeTyping();
+    if (err.isNetwork) {
+      statusText.textContent = 'Offline';
+      addMessage('bot', '🔌 Lost connection to server. Please check if the backend is still running.');
+    } else if (err.status === 429) {
+      statusText.textContent = 'Rate limited';
+      addMessage('bot', '⏳ You\'re sending messages too fast. Please wait a moment.');
+      setTimeout(() => { statusText.textContent = 'Online'; }, 5000);
+    } else if (err.status === 500) {
+      statusText.textContent = 'Error';
+      addMessage('bot', `⚙️ Server error: ${err.message}\nPlease check the backend terminal for details.`);
+      setTimeout(() => { statusText.textContent = 'Online'; }, 3000);
+    } else {
+      statusText.textContent = 'Online';
+      addMessage('bot', `⚠️ ${err.message || 'Something went wrong. Please try again.'}`);
+    }
+  }
+}
+
+function sendSuggestion(text) { sendMessage(text); }
+
+sendBtn.addEventListener('click', () => sendMessage(input.value));
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input.value); }
+});
+input.addEventListener('input', () => {
+  sendBtn.disabled = !input.value.trim();
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 80) + 'px';
+});
+
+// ── Voice Input ────────────────────────────────────────────────
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+function startChatVoice() {
+  if (!SpeechRecognition) {
+    voiceStatus.textContent = '⚠️ Voice not supported in this browser';
+    voiceStatus.classList.add('visible');
+    setTimeout(() => voiceStatus.classList.remove('visible'), 3000);
+    return;
+  }
+  if (isListening) { stopChatVoice(); return; }
+
+  chatRecognition = new SpeechRecognition();
+  chatRecognition.lang = 'en-IN';
+  chatRecognition.interimResults = true;
+  chatRecognition.maxAlternatives = 1;
+
+  chatRecognition.onstart = () => {
+    isListening = true;
+    voiceBtn.classList.add('listening');
+    voiceStatus.textContent = '🔴 Listening... speak now';
+    voiceStatus.classList.add('visible');
+  };
+
+  chatRecognition.onresult = (e) => {
+    const t = Array.from(e.results).map(r => r[0].transcript).join('');
+    input.value = t;
+    sendBtn.disabled = !t.trim();
+    if (e.results[e.results.length - 1].isFinal) {
+      stopChatVoice();
+      if (t.trim()) sendMessage(t.trim());
+    }
+  };
+
+  chatRecognition.onerror = () => stopChatVoice();
+  chatRecognition.onend = () => stopChatVoice();
+  chatRecognition.start();
+}
+
+function stopChatVoice() {
+  isListening = false;
+  voiceBtn.classList.remove('listening');
+  voiceStatus.classList.remove('visible');
+  if (chatRecognition) { try { chatRecognition.stop(); } catch(e){} }
+}
+
+voiceBtn.addEventListener('click', startChatVoice);
+
+// ── Wake Word Listener ("Hey Assistant") ──────────────────────
+function startWakeWordListener() {
+  if (!SpeechRecognition) return;
+  wakeWordRecognition = new SpeechRecognition();
+  wakeWordRecognition.continuous = true;
+  wakeWordRecognition.interimResults = true;
+  wakeWordRecognition.lang = 'en-IN';
+
+  wakeWordRecognition.onresult = (e) => {
+    const transcript = Array.from(e.results)
+      .map(r => r[0].transcript.toLowerCase()).join(' ');
+    if (transcript.includes(WAKE_WORD.toLowerCase())) {
+      wakeWordRecognition.stop();
+      showWakeToast();
+      if (!isOpen) toggleOpen();
+      setTimeout(() => {
+        startChatVoice();
+        restartWakeWordAfterDelay(5000);
+      }, 600);
+    }
+  };
+
+  wakeWordRecognition.onend = () => {
+    // Auto-restart wake word listener
+    if (studentName) setTimeout(startWakeWordListener, 1500);
+  };
+
+  try { wakeWordRecognition.start(); } catch(e){}
+}
+
+function showWakeToast() {
+  wakeToast.style.display = 'block';
+  setTimeout(() => { wakeToast.style.display = 'none'; }, 3000);
+}
+
+function restartWakeWordAfterDelay(ms) {
+  setTimeout(startWakeWordListener, ms);
+}
+
+// ── Voice Mode Toggle (TTS) ───────────────────────────────────
+voiceToggle.addEventListener('click', () => {
+  voiceMode = !voiceMode;
+  voiceToggle.style.background = voiceMode ? 'rgba(74,222,128,0.2)' : '';
+  voiceToggle.style.color = voiceMode ? '#4ade80' : '';
+  const toast = voiceMode ? '🔊 Voice mode ON — I\'ll speak my replies' : '🔇 Voice mode OFF';
+  addMessage('bot', toast);
+});
+
+// ── Open / Close ───────────────────────────────────────────────
+trigger.addEventListener('click', toggleOpen);
+closeBtn.addEventListener('click', toggleOpen);
+
+// Close on outside click
+document.addEventListener('click', (e) => {
+  if (isOpen && !win.contains(e.target) && !trigger.contains(e.target)) toggleOpen();
+});
+</script>
+</body>
+</html>

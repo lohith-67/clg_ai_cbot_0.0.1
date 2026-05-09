@@ -1,0 +1,19 @@
+{
+  "name": "snpsu-chatbot-backend",
+  "version": "0.1.0",
+  "description": "SNPSU AI Chatbot Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.105.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "multer": "^2.1.1"
+  }
+}
