@@ -17,8 +17,14 @@ const PYTHON = process.platform === 'win32' ? 'python' : 'python3';
 
 // ── Admin password check middleware ──────────────────────────
 function requireAdmin(req, res, next) {
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    console.error('❌ ADMIN_PASSWORD is not configured; rejecting admin request.');
+    return res.status(503).json({ error: 'Admin access is not configured on this server.' });
+  }
+
   const pwd = req.headers['x-admin-password'] || req.query.password;
-  if (pwd !== process.env.ADMIN_PASSWORD) {
+  if (pwd !== adminPassword) {
     return res.status(403).json({ error: 'Unauthorized. Provide x-admin-password header or ?password= query.' });
   }
   next();

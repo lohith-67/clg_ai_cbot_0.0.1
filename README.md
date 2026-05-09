@@ -7,7 +7,6 @@ snpsu-chatbot/
 ├── backend/
 │   ├── server.js                  ← Main Express server
 │   ├── supabase.js                ← All database functions
-│   ├── supabase_schema.sql        ← Run once in Supabase to create tables
 │   ├── package.json
 │   ├── .env.example               ← Copy to .env and fill in your keys
 │   ├── data/
@@ -17,8 +16,9 @@ snpsu-chatbot/
 │       ├── voice.js               ← Voice logging
 │       └── knowledge.js           ← Update college data via API
 ├── forntend/
-│   ├── chatbot-widget.html        ← ⭐ The complete chatbot UI
-│   └── embed-snippet.html         ← Paste into college website
+│   ├── admin-panel.html           ← Admin UI for knowledge/PDF management
+│   └── chatbot-widget.html        ← ⭐ The complete chatbot UI
+├── supabase_schema.sql            ← Run once in Supabase to create tables
 └── README.md
 ```
 
@@ -33,7 +33,7 @@ snpsu-chatbot/
    - Region: South Asia (ap-south-1)
 3. Wait ~2 min for project to be ready
 4. Go to **SQL Editor** (left sidebar)
-5. Paste the entire contents of `backend/supabase_schema.sql` → Click **Run**
+5. Paste the entire contents of `supabase_schema.sql` → Click **Run**
 6. You should see 3 new tables: `students`, `chat_messages`, `voice_transcripts`
 7. Get your keys from **Settings → API**:
    - `URL` → `SUPABASE_URL`
