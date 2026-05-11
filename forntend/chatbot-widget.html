@@ -10,18 +10,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --primary: #1e1e1e;
-  --primary-light: #444444;
-  --accent: #3b82f6;
-  --accent-glow: rgba(59,130,246,0.2);
+  --primary: #1B2A4A;
+  --primary-light: #2a3d66;
+  --accent: #C5A055;
+  --accent-glow: rgba(197, 160, 85, 0.3);
   --bg: #ffffff;
-  --bg2: #f9f9f9;
-  --bg3: #f0f0f0;
-  --text: #1a1a1a;
-  --text2: #555555;
-  --text3: #aaaaaa;
-  --border: rgba(0,0,0,0.08);
-  --shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --bg2: #f8f7f4;
+  --bg3: #edeae4;
+  --text: #1B2A4A;
+  --text2: #4a5568;
+  --text3: #a0aec0;
+  --border: rgba(27,42,74,0.1);
+  --shadow: 0 8px 40px rgba(27,42,74,0.15), 0 2px 8px rgba(0,0,0,0.06);
   --radius: 18px;
   --font-head: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
@@ -40,26 +40,26 @@ body {
   width: 62px;
   height: 62px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid var(--border);
+  background: var(--primary);
+  border: 2px solid var(--accent);
   cursor: pointer;
   z-index: 99998;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 0 0 var(--accent-glow);
+  box-shadow: 0 4px 20px rgba(27,42,74,0.25), 0 0 0 0 var(--accent-glow);
   transition: transform 0.2s, box-shadow 0.2s;
   animation: pulse-ring 3s ease infinite;
 }
 #snpsu-trigger:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 28px rgba(0,0,0,0.15), 0 0 0 8px var(--accent-glow);
+  box-shadow: 0 6px 28px rgba(27,42,74,0.3), 0 0 0 8px var(--accent-glow);
 }
-#snpsu-trigger svg { width: 28px; height: 28px; color: var(--accent); }
+#snpsu-trigger svg { width: 32px; height: 32px; }
 
 @keyframes pulse-ring {
-  0%, 70%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 0 0 var(--accent-glow); }
-  35% { box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 0 10px rgba(59,130,246,0); }
+  0%, 70%, 100% { box-shadow: 0 4px 20px rgba(27,42,74,0.25), 0 0 0 0 var(--accent-glow); }
+  35% { box-shadow: 0 4px 20px rgba(27,42,74,0.25), 0 0 0 10px rgba(197,160,85,0); }
 }
 
 /* Badge on trigger */
@@ -109,13 +109,14 @@ body {
 
 /* ── Header ─────────────────────────────────────────────────── */
 #snpsu-header {
-  background: #ffffff;
+  background: var(--primary);
   padding: 14px 16px 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--accent);
+  background: linear-gradient(135deg, #1B2A4A 0%, #243558 100%);
 }
 .header-avatar {
   width: 38px;
@@ -126,22 +127,19 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 14px;
-  color: #fff;
+  color: var(--primary);
 }
 .header-info { flex: 1; }
 .header-info h2 {
   font-family: var(--font-head);
   font-size: 14px;
   font-weight: 700;
-  color: var(--text);
+  color: #ffffff;
   letter-spacing: 0.01em;
 }
 .header-info p {
   font-size: 11px;
-  color: var(--text3);
+  color: #a1a1aa;
   margin-top: 1px;
 }
 .header-status {
@@ -149,7 +147,7 @@ body {
   align-items: center;
   gap: 5px;
   font-size: 11px;
-  color: var(--text2);
+  color: #cbd5e0;
 }
 .status-dot {
   width: 7px; height: 7px;
@@ -162,16 +160,16 @@ body {
 
 .header-actions { display: flex; gap: 8px; }
 .header-btn {
-  background: var(--bg2);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 8px;
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  color: var(--text2);
-  transition: background 0.15s;
+  color: #ffffff;
+  transition: background 0.15s, color 0.15s;
 }
-.header-btn:hover { background: var(--bg3); }
+.header-btn:hover { background: var(--accent); color: var(--primary); }
 .header-btn svg { width: 15px; height: 15px; }
 
 /* ── Registration Screen ────────────────────────────────────── */
@@ -185,17 +183,18 @@ body {
   gap: 0;
 }
 .reg-logo {
-  width: 68px;
-  height: 68px;
-  background: var(--primary);
-  border-radius: 20px;
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  border-radius: 0;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(26,58,92,0.2);
+  box-shadow: none;
 }
-.reg-logo svg { width: 36px; height: 36px; }
+.reg-logo svg { width: 80px; height: 80px; }
 .reg-title {
   font-family: var(--font-head);
   font-size: 20px;
@@ -307,17 +306,17 @@ body {
 .msg-avatar {
   width: 28px; height: 28px;
   border-radius: 50%;
-  background: var(--bg3);
+  background: var(--primary);
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   font-weight: 600;
-  color: var(--primary);
+  color: var(--accent);
   font-family: var(--font-head);
 }
-.msg.user .msg-avatar { background: var(--accent); color: #fff; }
+.msg.user .msg-avatar { background: var(--accent); color: var(--primary); }
 .bubble {
   max-width: 78%;
   padding: 10px 13px;
@@ -330,7 +329,7 @@ body {
   word-break: break-word;
 }
 .msg.user .bubble {
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
   border-color: transparent;
   border-radius: 14px 14px 4px 14px;
@@ -505,11 +504,23 @@ body {
 <!-- ── Floating Trigger ─────────────────────────────────────── -->
 <button id="snpsu-trigger" title="Chat with SNPSU Assistant">
   <div id="snpsu-badge">AI</div>
-  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    <circle cx="9" cy="10" r="1" fill="white" stroke="none"/>
-    <circle cx="12" cy="10" r="1" fill="white" stroke="none"/>
-    <circle cx="15" cy="10" r="1" fill="white" stroke="none"/>
+  <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 4L8 22V72C8 72 20 102 50 116C80 102 92 72 92 72V22L50 4Z" fill="#1B2A4A" stroke="white" stroke-width="3"/>
+    <path d="M50 12L16 27V69C16 69 26 95 50 107C74 95 84 69 84 69V27L50 12Z" fill="#1B2A4A" stroke="#C5A055" stroke-width="1.5"/>
+    <line x1="50" y1="20" x2="50" y2="95" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="20" y1="55" x2="80" y2="55" stroke="#C5A055" stroke-width="1.2"/>
+    <circle cx="37" cy="38" r="5" fill="none" stroke="#C5A055" stroke-width="1.5"/>
+    <circle cx="37" cy="38" r="2" fill="#C5A055"/>
+    <line x1="37" y1="28" x2="37" y2="30" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="37" y1="46" x2="37" y2="48" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="27" y1="38" x2="29" y2="38" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="45" y1="38" x2="47" y2="38" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="30" y1="31" x2="31.5" y2="32.5" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="42.5" y1="43.5" x2="44" y2="45" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="44" y1="31" x2="42.5" y2="32.5" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="31.5" y1="43.5" x2="30" y2="45" stroke="#C5A055" stroke-width="1.2"/>
+    <path d="M57 32L63 32L63 28L67 28L67 32L73 32L73 45L57 45Z" fill="none" stroke="#C5A055" stroke-width="1.2"/>
+    <line x1="63" y1="35" x2="63" y2="45" stroke="#C5A055" stroke-width="1"/>
   </svg>
 </button>
 
@@ -518,7 +529,16 @@ body {
 
   <!-- Header -->
   <div id="snpsu-header">
-    <div class="header-avatar">S</div>
+    <div class="header-avatar" style="background:transparent; width:34px; height:34px; padding:0;">
+      <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:34px;">
+        <path d="M50 4L8 22V72C8 72 20 102 50 116C80 102 92 72 92 72V22L50 4Z" fill="#1B2A4A" stroke="white" stroke-width="4"/>
+        <path d="M50 12L16 27V69C16 69 26 95 50 107C74 95 84 69 84 69V27L50 12Z" fill="#1B2A4A" stroke="#C5A055" stroke-width="2"/>
+        <circle cx="37" cy="38" r="5" fill="none" stroke="#C5A055" stroke-width="2"/>
+        <circle cx="37" cy="38" r="2" fill="#C5A055"/>
+        <line x1="50" y1="20" x2="50" y2="95" stroke="#C5A055" stroke-width="1.5"/>
+        <line x1="20" y1="55" x2="80" y2="55" stroke="#C5A055" stroke-width="1.5"/>
+      </svg>
+    </div>
     <div class="header-info">
       <h2>SNPSU Assistant</h2>
       <p>Sapthagiri NPS University</p>
@@ -548,10 +568,38 @@ body {
   <!-- Registration Screen -->
   <div id="snpsu-register">
     <div class="reg-logo">
-      <svg viewBox="0 0 40 40" fill="none">
-        <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" stroke="#E8A020" stroke-width="2" fill="none"/>
-        <path d="M20 10L30 15V25L20 30L10 25V15L20 10Z" fill="rgba(232,160,32,0.2)" stroke="#E8A020" stroke-width="1.5"/>
-        <circle cx="20" cy="20" r="4" fill="#E8A020"/>
+      <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 4L8 22V72C8 72 20 102 50 116C80 102 92 72 92 72V22L50 4Z" fill="#1B2A4A" stroke="white" stroke-width="3"/>
+        <path d="M50 12L16 27V69C16 69 26 95 50 107C74 95 84 69 84 69V27L50 12Z" fill="#1B2A4A" stroke="#C5A055" stroke-width="1.5"/>
+        <line x1="50" y1="20" x2="50" y2="95" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="20" y1="55" x2="80" y2="55" stroke="#C5A055" stroke-width="1.2"/>
+        <!-- Sun -->
+        <circle cx="37" cy="38" r="5" fill="none" stroke="#C5A055" stroke-width="1.5"/>
+        <circle cx="37" cy="38" r="2" fill="#C5A055"/>
+        <line x1="37" y1="28" x2="37" y2="30" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="37" y1="46" x2="37" y2="48" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="27" y1="38" x2="29" y2="38" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="45" y1="38" x2="47" y2="38" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="30" y1="31" x2="31.5" y2="32.5" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="42.5" y1="43.5" x2="44" y2="45" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="44" y1="31" x2="42.5" y2="32.5" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="31.5" y1="43.5" x2="30" y2="45" stroke="#C5A055" stroke-width="1.2"/>
+        <!-- Book -->
+        <path d="M57 32L63 32L63 28L67 28L67 32L73 32L73 45L57 45Z" fill="none" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="63" y1="35" x2="63" y2="45" stroke="#C5A055" stroke-width="1"/>
+        <!-- Mountains -->
+        <path d="M22 75L30 62L35 68L42 58L50 75Z" fill="none" stroke="#C5A055" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M25 80L33 67L38 73L45 63L50 72" fill="none" stroke="#C5A055" stroke-width="1" stroke-linejoin="round" opacity="0.5"/>
+        <!-- Pillar -->
+        <rect x="58" y="60" width="16" height="3" rx="1" fill="none" stroke="#C5A055" stroke-width="1.2"/>
+        <line x1="61" y1="63" x2="61" y2="82" stroke="#C5A055" stroke-width="1.5"/>
+        <line x1="63" y1="63" x2="63" y2="82" stroke="#C5A055" stroke-width="1"/>
+        <line x1="65" y1="63" x2="65" y2="82" stroke="#C5A055" stroke-width="1.5"/>
+        <line x1="67" y1="63" x2="67" y2="82" stroke="#C5A055" stroke-width="1"/>
+        <line x1="69" y1="63" x2="69" y2="82" stroke="#C5A055" stroke-width="1.5"/>
+        <rect x="58" y="82" width="16" height="3" rx="1" fill="none" stroke="#C5A055" stroke-width="1.2"/>
+        <!-- Scroll curl -->
+        <path d="M58 63C55 63 54 66 56 68" fill="none" stroke="#C5A055" stroke-width="1.2"/>
       </svg>
     </div>
     <div class="reg-title">Welcome to SNPSU</div>
@@ -733,8 +781,11 @@ function addMessage(role, text) {
     .replace(/\n• /g, '\n<li>')
     .replace(/\n- /g, '\n<li>');
 
+  const botAvatarSvg = `<svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;"><path d="M50 4L8 22V72C8 72 20 102 50 116C80 102 92 72 92 72V22L50 4Z" fill="#1B2A4A" stroke="white" stroke-width="5"/><path d="M50 12L16 27V69C16 69 26 95 50 107C74 95 84 69 84 69V27L50 12Z" fill="#1B2A4A" stroke="#C5A055" stroke-width="3"/><circle cx="40" cy="45" r="6" fill="#C5A055"/></svg>`;
+  const avatarContent = isUser ? initials : botAvatarSvg;
+
   div.innerHTML = `
-    <div class="msg-avatar">${initials}</div>
+    <div class="msg-avatar">${avatarContent}</div>
     <div class="bubble">${formatted.replace(/\n/g, '<br/>')}</div>`;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
@@ -745,7 +796,8 @@ function addTyping() {
   const div = document.createElement('div');
   div.className = 'msg bot typing-indicator';
   div.id = 'typing';
-  div.innerHTML = `<div class="msg-avatar">SN</div><div class="bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  const miniLogo = `<svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path d="M50 4L8 22V72C8 72 20 102 50 116C80 102 92 72 92 72V22L50 4Z" fill="#1B2A4A" stroke="white" stroke-width="5"/><path d="M50 12L16 27V69C16 69 26 95 50 107C74 95 84 69 84 69V27L50 12Z" fill="#1B2A4A" stroke="#C5A055" stroke-width="3"/><circle cx="40" cy="45" r="6" fill="#C5A055"/></svg>`;
+  div.innerHTML = `<div class="msg-avatar">${miniLogo}</div><div class="bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
 }
@@ -910,6 +962,8 @@ input.addEventListener('input', () => {
 
 // ── Voice Input ────────────────────────────────────────────────
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let _voiceFinalTranscript = '';  // Stores the final recognized text
+let _voiceHandled = false;       // Guard against double-fire
 
 function startChatVoice() {
   if (!SpeechRecognition) {
@@ -920,9 +974,14 @@ function startChatVoice() {
   }
   if (isListening) { stopChatVoice(); return; }
 
+  // Reset state for this recognition session
+  _voiceFinalTranscript = '';
+  _voiceHandled = false;
+
   chatRecognition = new SpeechRecognition();
   chatRecognition.lang = 'en-IN';
   chatRecognition.interimResults = true;
+  chatRecognition.continuous = false;
   chatRecognition.maxAlternatives = 1;
 
   chatRecognition.onstart = () => {
@@ -933,25 +992,117 @@ function startChatVoice() {
   };
 
   chatRecognition.onresult = (e) => {
-    const t = Array.from(e.results).map(r => r[0].transcript).join('');
-    input.value = t;
-    sendBtn.disabled = !t.trim();
-    if (e.results[e.results.length - 1].isFinal) {
-      stopChatVoice();
-      if (t.trim()) sendMessage(t.trim());
+    let interimText = '';
+    let finalText = '';
+
+    for (let i = 0; i < e.results.length; i++) {
+      const result = e.results[i];
+      if (result.isFinal) {
+        finalText += result[0].transcript;
+      } else {
+        interimText += result[0].transcript;
+      }
+    }
+
+    // Show what's being heard in the input field (live preview)
+    const displayText = finalText || interimText;
+    input.value = displayText;
+    sendBtn.disabled = !displayText.trim();
+
+    // Update status to show we're still processing
+    if (interimText) {
+      voiceStatus.textContent = '🎙️ Hearing: "' + interimText.slice(0, 40) + (interimText.length > 40 ? '...' : '') + '"';
+    }
+
+    // Store the final transcript when we get it
+    if (finalText) {
+      _voiceFinalTranscript = finalText.trim();
+      voiceStatus.textContent = '✅ Got it! Sending...';
     }
   };
 
-  chatRecognition.onerror = () => stopChatVoice();
-  chatRecognition.onend = () => stopChatVoice();
-  chatRecognition.start();
+  chatRecognition.onerror = (e) => {
+    console.warn('Voice recognition error:', e.error);
+    if (e.error === 'no-speech') {
+      voiceStatus.textContent = '😶 No speech detected. Try again.';
+      voiceStatus.classList.add('visible');
+      setTimeout(() => voiceStatus.classList.remove('visible'), 2500);
+    } else if (e.error === 'audio-capture') {
+      voiceStatus.textContent = '🎤 Microphone not found. Check permissions.';
+      voiceStatus.classList.add('visible');
+      setTimeout(() => voiceStatus.classList.remove('visible'), 3000);
+    } else if (e.error !== 'aborted') {
+      voiceStatus.textContent = '⚠️ Voice error: ' + e.error;
+      voiceStatus.classList.add('visible');
+      setTimeout(() => voiceStatus.classList.remove('visible'), 3000);
+    }
+    _cleanupVoiceUI();
+  };
+
+  // onend fires AFTER onresult — this is where we actually send the message
+  chatRecognition.onend = () => {
+    _cleanupVoiceUI();
+
+    // Guard against double-fire
+    if (_voiceHandled) return;
+    _voiceHandled = true;
+
+    const transcript = _voiceFinalTranscript || input.value.trim();
+    if (transcript) {
+      console.log('🎙️ Voice recognized:', transcript);
+      input.value = transcript;
+      sendBtn.disabled = false;
+
+      // Send the message
+      sendMessage(transcript);
+
+      // Log the voice interaction to backend
+      logVoiceTranscript(transcript);
+    }
+  };
+
+  try {
+    chatRecognition.start();
+    console.log('🎙️ Voice recognition started');
+  } catch (e) {
+    console.error('Failed to start voice recognition:', e);
+    _cleanupVoiceUI();
+  }
+}
+
+// Clean up UI without sending — used by both onerror and onend
+function _cleanupVoiceUI() {
+  isListening = false;
+  voiceBtn.classList.remove('listening');
+  // Small delay before hiding status so user can read it
+  setTimeout(() => {
+    if (!isListening) voiceStatus.classList.remove('visible');
+  }, 1500);
 }
 
 function stopChatVoice() {
-  isListening = false;
-  voiceBtn.classList.remove('listening');
-  voiceStatus.classList.remove('visible');
-  if (chatRecognition) { try { chatRecognition.stop(); } catch(e){} }
+  if (chatRecognition) {
+    try { chatRecognition.stop(); } catch(e) {}
+  }
+  // Don't clean up UI here — let onend handle it
+}
+
+// Log voice transcript to backend for analytics
+async function logVoiceTranscript(transcript) {
+  try {
+    await apiFetch('/voice/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId,
+        srn: studentSRN,
+        transcript
+      })
+    }, { retries: 0, timeoutMs: 5000 });
+  } catch (e) {
+    // Silent fail — voice logging is non-critical
+    console.warn('Voice log failed:', e.message);
+  }
 }
 
 voiceBtn.addEventListener('click', startChatVoice);
@@ -959,6 +1110,9 @@ voiceBtn.addEventListener('click', startChatVoice);
 // ── Wake Word Listener ("Hey Assistant") ──────────────────────
 function startWakeWordListener() {
   if (!SpeechRecognition) return;
+  // Don't start wake word if already listening for chat input
+  if (isListening) return;
+
   wakeWordRecognition = new SpeechRecognition();
   wakeWordRecognition.continuous = true;
   wakeWordRecognition.interimResults = true;
@@ -973,14 +1127,19 @@ function startWakeWordListener() {
       if (!isOpen) toggleOpen();
       setTimeout(() => {
         startChatVoice();
-        restartWakeWordAfterDelay(5000);
+        restartWakeWordAfterDelay(8000);
       }, 600);
     }
   };
 
+  wakeWordRecognition.onerror = () => {
+    // Silently restart on error
+    if (studentName) setTimeout(startWakeWordListener, 3000);
+  };
+
   wakeWordRecognition.onend = () => {
-    // Auto-restart wake word listener
-    if (studentName) setTimeout(startWakeWordListener, 1500);
+    // Auto-restart wake word listener (only if not actively chatting by voice)
+    if (studentName && !isListening) setTimeout(startWakeWordListener, 1500);
   };
 
   try { wakeWordRecognition.start(); } catch(e){}
@@ -992,7 +1151,9 @@ function showWakeToast() {
 }
 
 function restartWakeWordAfterDelay(ms) {
-  setTimeout(startWakeWordListener, ms);
+  setTimeout(() => {
+    if (!isListening) startWakeWordListener();
+  }, ms);
 }
 
 // ── Voice Mode Toggle (TTS) ───────────────────────────────────
